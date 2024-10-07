@@ -1,6 +1,7 @@
 package com.Commercial.commercial.Controller;
 
 import com.Commercial.commercial.Constants.CONSTANTS;
+import com.Commercial.commercial.DAO.ProductDTO;
 import com.Commercial.commercial.DAO.product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,14 +16,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class productController {
     public final productService productService;
+
     @PostMapping(path="/createProduct")
-    public ResponseEntity<product> createProduct(@RequestBody product prd) throws Exception {
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO prd) throws Exception {
        try {
-         product created= productService.createProduct(prd);
+           ProductDTO created= productService.createProduct(prd);
            return new ResponseEntity<>(created, HttpStatus.OK);
        }
        catch(Exception e){
-           throw new Exception(CONSTANTS.SOMETHING_WENT_WRONG);       }
+           throw new Exception(e);       }
     }
 
     @DeleteMapping(path="/deleteProduct/{id}")
@@ -45,13 +47,13 @@ public class productController {
 
     }
     @GetMapping(path="/getAllProducts")
-    public List<product> getAllProducts()  {
+    public List<ProductDTO> getAllProducts()  {
 
       return  productService.getAllProducts();
     }
 
     @GetMapping(path="/getProduct/{id}")
-    public product getProduct(@PathVariable Integer id)  {
+    public ProductDTO getProduct(@PathVariable Integer id)  {
 
         return  productService.getProduct(id);
     }

@@ -50,7 +50,6 @@ public ByteArrayInputStream generatePdf(devis devi) {
         table.addCell(new Cell().add(new Paragraph(devi.getCategory().getName())));
 
         table.addCell(new Cell().add(new Paragraph("Product")));
-        table.addCell(new Cell().add(new Paragraph(devi.getProduct().getName())));
 
         table.addCell(new Cell().add(new Paragraph("Total Sum")));
         table.addCell(new Cell().add(new Paragraph(String.valueOf(devi.getSum()))));

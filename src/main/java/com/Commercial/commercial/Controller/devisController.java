@@ -2,6 +2,7 @@ package com.Commercial.commercial.Controller;
 
 import com.Commercial.commercial.Constants.CONSTANTS;
 import com.Commercial.commercial.DAO.devis;
+import com.Commercial.commercial.DAO.devisDTO;
 import com.Commercial.commercial.Service.devisService;
 import com.Commercial.commercial.Service.pdfGeneratorService;
 
@@ -36,9 +37,9 @@ public class devisController {
     }
 
     @GetMapping(path="/getDeviById/{id}")
-    public ResponseEntity<devis> getDeviById(@PathVariable Integer id ) throws Exception {
+    public ResponseEntity<devisDTO> getDeviById(@PathVariable Integer id ) throws Exception {
 
-            devis dv=devisServ.getDeviById(id);
+        devisDTO dv=devisServ.getDeviById(id);
             return new ResponseEntity<>(dv, HttpStatus.OK);
 
 
@@ -58,7 +59,7 @@ public class devisController {
     }
 
     @GetMapping(path="/getAllDevis")
-    public List<devis>getAllDevis( ) {
+    public List<devisDTO>getAllDevis( ) {
        return devisServ.getAllDevis();
 }
   @GetMapping("/devis/{id}/pdf")

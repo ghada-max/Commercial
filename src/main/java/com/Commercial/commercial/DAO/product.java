@@ -1,5 +1,6 @@
 package com.Commercial.commercial.DAO;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,19 +8,21 @@ import lombok.NoArgsConstructor;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="products")
-public class product implements Serializable {
+public class product  implements Serializable
+{
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
-    private Integer id;
+    public Integer id;
 
     @JsonProperty("name") // Change the JSON property name to lowercase
     @Column(name = "Name") // You can also specify the column name here
@@ -29,6 +32,7 @@ public class product implements Serializable {
     @JsonProperty("category") // Change "Details" to "details" in JSON
     @JoinColumn(name = "category_id",nullable=false)
     private category category;
+
 
 
     @JsonProperty("designation")
@@ -47,6 +51,11 @@ public class product implements Serializable {
     @Column
     private Integer quantity;
 
+
+    @JsonProperty("OrderedQuantity")
+    @Column(name="OrderedQuantity")
+    private Integer OrderedQuantity;
+
     @JsonProperty("price")
     @Column
     private Integer price;
@@ -58,6 +67,11 @@ public class product implements Serializable {
     @JsonProperty("ttc") // Change "TTC" to "ttc" in JSON
     @Column(name = "TTC")
     private Integer TTC;
+
+
+    @ManyToMany(mappedBy="products")
+    public List<devis> devis;
+
 
 
 }

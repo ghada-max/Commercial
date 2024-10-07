@@ -11,6 +11,7 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -41,6 +42,11 @@ public class client implements Serializable {
     @Column
     @NotEmpty(message = "address field is empty")
     private String address;
+
+
+    @OneToMany
+    private List<devis> devi;
+
 
 
 }

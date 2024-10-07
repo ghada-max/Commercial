@@ -8,6 +8,9 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 public class
 
 
+
+
+
 CommercialApplication {
 
 
@@ -16,7 +19,13 @@ CommercialApplication {
 
 
 
+
+
+
+
+
 	public static void main(String[] args) {
+
 
 
 
