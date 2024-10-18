@@ -7,25 +7,24 @@ import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
-import com.itextpdf.layout.element.*;
-import com.itextpdf.layout.properties.TextAlignment;
+import com.itextpdf.layout.element.Image;
+import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.layout.element.Table;
+import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.properties.UnitValue;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.net.MalformedURLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 
 @Service
-public class pdfGeneratorService {
+public class generateInvoicePdf {
     public List<product> prods;
 
-    public ByteArrayInputStream generatePdf(devisDTO dev, company comp) throws MalformedURLException {
-
+    public ByteArrayInputStream generatePdf(InvoiceDTO inv, company comp) throws MalformedURLException {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
 
@@ -34,9 +33,8 @@ public class pdfGeneratorService {
         PdfDocument pdfDoc = new PdfDocument(writer);
         Document document = new Document(pdfDoc);
 
-
         // Add title
-        document.add(new Paragraph("Devis")
+        document.add(new Paragraph("Facture")
                 .setFontSize(25)
                 .setBold()
                 .setMarginBottom(20).setTextAlignment(com.itextpdf.layout.properties.TextAlignment.CENTER));// Aligner au centre si souhaité
@@ -54,26 +52,26 @@ public class pdfGeneratorService {
                 .setFontSize(12)
                 .setMarginBottom(20);
 
-        String imgPath=comp.getImageURL();
-        ImageData imageData=ImageDataFactory.create(comp.getImageURL());
-        Image img=new Image(imageData);
-        img.setWidth(200);
-        img.setHeight(150);
-        img.setPaddingLeft(5);
-        document.add(companyDetails);
+     String imgPath=comp.getImageURL();
+     ImageData imageData=ImageDataFactory.create(comp.getImageURL());
+            Image img=new Image(imageData);
+            img.setWidth(200);
+            img.setHeight(150);
+            img.setPaddingLeft(5);
+            document.add(companyDetails);
         img.setFixedPosition(400, 670);  // Adjust X and Y coordinates for positioning the image
 
         document.add(img);
         // Create a table with 2 columns
         Paragraph parag1=new Paragraph("");
-        Paragraph parag2=new Paragraph("Client: ").setFontSize(20)
+        Paragraph parag2=new Paragraph("Bill to: ").setFontSize(20)
                 .setBold()
                 .setMarginBottom(20);
-        Paragraph parag3 = new Paragraph("Name: " + dev.getClient().getName() +
-                "\nAddress: " + dev.getClient().getAddress() +
-                "\nEmail: " + dev.getClient().getEmail() +
+        Paragraph parag3 = new Paragraph("Name: " + inv.getInvoiceDetails().getClient().getName() +
+                "\nAddress: " + inv.getInvoiceDetails().getClient().getAddress() +
+                "\nEmail: " + inv.getInvoiceDetails().getClient().getEmail() +
 
-                "\nPhone: " + dev.getClient().getPhone())
+                "\nPhone: " + inv.getInvoiceDetails().getClient().getPhone())
                 .setBold()
                 .setFontSize(12)
                 .setMarginBottom(20);
@@ -92,40 +90,36 @@ public class pdfGeneratorService {
         table.addHeaderCell(new Cell().add(new Paragraph("Price").setBold()));
         table.addHeaderCell(new Cell().add(new Paragraph("Total").setBold()));
 
-        for (ProductDTO prods : dev.getProductsDto()) {
+         for (ProductDTO prods : inv.getInvoiceDetails().getProductsDto()) {
 
-            table.addCell(new Paragraph(prods.getName() != null ? prods.getQuantity().toString() : "N/A"));
-            table.addCell(new Paragraph(prods.getOrderedQuantity() != null ? prods.getOrderedQuantity().toString() : "N/A"));
-            table.addCell(new Paragraph(prods.getPrice() != null ? prods.getPrice().toString() : "N/A"));
-            if(prods.getPrice() != null && prods.getOrderedQuantity() != null) {
-                table.addCell(new Paragraph(String.valueOf(prods.getPrice() * prods.getOrderedQuantity())));
+             table.addCell(new Paragraph(prods.getName() != null ? prods.getQuantity().toString() : "N/A"));
+             table.addCell(new Paragraph(prods.getOrderedQuantity() != null ? prods.getOrderedQuantity().toString() : "N/A"));
+             table.addCell(new Paragraph(prods.getPrice() != null ? prods.getPrice().toString() : "N/A"));
+             if(prods.getPrice() != null && prods.getOrderedQuantity() != null) {
+                 table.addCell(new Paragraph(String.valueOf(prods.getPrice() * prods.getOrderedQuantity())));
 
-            }
-            else {
-                table.addCell(new Paragraph("N/A"));
-            }}
-        table.addCell(new Paragraph(String.valueOf("Total:"+dev.getSum())+dev.getCurrency()).setUnderline());
+             }
+             else {
+                 table.addCell(new Paragraph("N/A"));
+             }}
+        table.addCell(new Paragraph(String.valueOf("Total:"+inv.getInvoiceDetails().getSum())+inv.getInvoiceDetails().getCurrency()).setUnderline());
         document.add(table);
         Paragraph parag4=new Paragraph("");
-
+        Paragraph parag7=new Paragraph("Payment Method:"+inv.getPaymentMethod().getLabel());
+        document.add(parag7);
+        Paragraph parag5 = new Paragraph("En votre aimable règlement\nCordialement");
+               // Aligner au centre si souhaité
 
 
         Paragraph parag6 = new Paragraph("Signature")
                 .setPaddingRight(1).setBold().setPaddingBottom(20) // Ajuster l'espacement à gauche si nécessaire
-                .setTextAlignment(TextAlignment.RIGHT);  // Alignement à gauche
+                .setTextAlignment(com.itextpdf.layout.properties.TextAlignment.LEFT);  // Alignement à gauche
 
 
         document.add(parag4);
+        document.add(parag5);
         document.add(parag6);
 
-        Paragraph validityParagraph = new Paragraph()
-                .add(new Text("This document is valid until: ")
-                        .setBold()
-                        .setFontColor(ColorConstants.RED)) // Set the font color to red
-                .add(new Text(dev.getOfferEndDate().toString()) // Add the actual date
-                        .setItalic()
-                        .setFontSize(12)).setTextAlignment(com.itextpdf.layout.properties.TextAlignment.CENTER);
-        document.add(validityParagraph);
 
 
 

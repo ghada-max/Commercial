@@ -27,6 +27,10 @@ public class supplier implements Serializable {
     @Column
     private Integer id;
 
+    @JsonProperty("TaxId")
+    @Column(name="TaxId")
+    private String TaxId;
+
     @JsonProperty("name") // Change "TTC" to "ttc" in JSON
     @Column
     private String name;

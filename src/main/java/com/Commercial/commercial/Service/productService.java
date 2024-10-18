@@ -29,7 +29,6 @@ public class productService {
         dto.setDetails(prod.getDetails());
         dto.setImage(prod.getImage());
         dto.setQuantity(prod.getQuantity());
-        dto.setOrderedQuantity(prod.getOrderedQuantity());
         dto.setPrice(prod.getPrice());
         dto.setHtt(prod.getHTT());
         dto.setTtc(prod.getTTC());
@@ -45,7 +44,6 @@ public class productService {
         newProduct.setDetails(prdDto.getDetails());
         newProduct.setImage(prdDto.getImage());
         newProduct.setQuantity(prdDto.getQuantity());
-        newProduct.setOrderedQuantity(prdDto.getOrderedQuantity());
         newProduct.setPrice(prdDto.getPrice());
         newProduct.setHTT(prdDto.getHtt());
         newProduct.setTTC(prdDto.getTtc());
@@ -73,7 +71,8 @@ public class productService {
                 updatingproduct.setCategory(prd.getCategory());
                 updatingproduct.setDetails(prd.getDetails());
                 updatingproduct.setPrice(prd.getPrice());
-                updatingproduct.setQuantity(prd.getQuantity());
+                if(updatingproduct.getQuantity()!=null){
+                updatingproduct.setQuantity(prd.getQuantity());}
                 updatingproduct.setImage(prd.getImage());
                 updatingproduct.setDesignation(prd.getDesignation());
                 updatingproduct.setTTC(prd.getTTC());

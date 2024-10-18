@@ -10,7 +10,6 @@ import org.hibernate.annotations.DynamicUpdate;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
 @Data
 public class devisDTO {
 
@@ -19,9 +18,9 @@ public class devisDTO {
 
         private client client;
 
-        private category category;
 
         private Integer sum;
+
 
         private Integer productQuantityD;
 

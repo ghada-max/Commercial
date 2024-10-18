@@ -1,12 +1,9 @@
 package com.Commercial.commercial.repository;
 
-import com.Commercial.commercial.DAO.devis;
+import com.Commercial.commercial.DAO.Invoice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface devisRepository extends JpaRepository<devis,Integer> {
-
-    devis findByClientId(Integer clientId);
-
+public interface InvoiceRepository extends JpaRepository<Invoice,Integer> {
 }

@@ -1,4 +1,5 @@
 package com.Commercial.commercial.DAO;
+import com.Commercial.commercial.Constants.devisStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
@@ -29,22 +30,16 @@ public class devis  implements Serializable {
     private Integer Id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonProperty("clientId")
     @JoinColumn(name="clientId",nullable = false)
     private client client;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JsonProperty("categoryId")
-    @JoinColumn(name="categoryId",nullable=false)
-    private category category;
+
 
     @JsonProperty("Sum")
     @Column(name="Sum")
     private Integer sum;
 
-    @JsonProperty("productQuantityD")
-    @Column(name="productQuantityD")
-    private Integer productQuantityD;
+
 
     @JsonProperty("creationDate")
     @Column(name="creationDate")
@@ -69,6 +64,10 @@ public class devis  implements Serializable {
     joinColumns = @JoinColumn(name="devis_id"),
     inverseJoinColumns = @JoinColumn(name="product_id"))
     private List<product> products; // Change to Product
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="DevisStatus")
+    private devisStatus devisStatus;
 
 
 

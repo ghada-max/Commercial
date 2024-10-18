@@ -37,10 +37,10 @@ public class companyController {
     }
 
     @GetMapping(path="/getCompany")
-    public ResponseEntity<List<company>> getCompany()
+    public ResponseEntity<Optional<company>> getCompany()
     {
-      List<company>  list=companyService.getCompany();
-        return new ResponseEntity<>(list, HttpStatus.OK);
+      Optional<company> comp=companyService.getCompany();
+        return new ResponseEntity<>(comp, HttpStatus.OK);
 
 
     }

@@ -1,6 +1,7 @@
 package com.Commercial.commercial.DAO;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -26,6 +27,11 @@ public class client implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
     private Integer id;
+
+    @JsonProperty("TaxId")
+    @Column(name="TaxId")
+    private String TaxId;
+
 
     @Column
     @NotEmpty(message = "name field is empty")

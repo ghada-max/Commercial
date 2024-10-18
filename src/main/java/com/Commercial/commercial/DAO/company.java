@@ -1,17 +1,14 @@
 package com.Commercial.commercial.DAO;
 
-import com.Commercial.commercial.Service.ClientService;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
-import java.util.Objects;
 
 @Data
 @Entity
@@ -34,6 +31,12 @@ public class company {
     @JsonProperty("LastModifDate")
     @Column(name="LastModifDate")
     private Date LastModifDate;
+
+    @JsonProperty("TaxId")
+    @Column(name="TaxId")
+    private String TaxId;
+
+
 
     @JsonProperty("denomination")
     @Column(name="denomination")
@@ -64,6 +67,10 @@ public class company {
     @Column(name="phone")
     private String phone;
 
+    @JsonProperty("imageURL")
+    @Column(name="imageURL")
+    private String imageURL;
+
     @JsonProperty("fax")
     @Column(name="fax")
     private String fax;
@@ -71,6 +78,15 @@ public class company {
     @JsonProperty("email")
     @Column(name="email")
     private String email;
+
+    @JsonProperty("BankAccountId")
+    @OneToOne
+    @JoinColumn(name = "BankAccountId", unique = true)
+    private BankAccount bankAccount;
+
+    @JsonProperty("Balance")
+    @Column(name="Balance")
+    private BigDecimal Balance = BigDecimal.ZERO;;
 
 
 }

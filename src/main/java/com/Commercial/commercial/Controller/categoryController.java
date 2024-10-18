@@ -21,8 +21,8 @@ public class categoryController {
     public final categoryService categoryService;
     @PostMapping(path = "/AddCategory")
     public ResponseEntity<String> addClient(@Valid @RequestBody category c) throws Exception {
-        try{  categoryService.addCategory(c); // Store the returned client from the service
-            return new ResponseEntity<>("category created successfully", HttpStatus.OK); // Return the created client with a 201 status
+        try{  categoryService.addCategory(c);
+            return new ResponseEntity<>("category created successfully", HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(CONSTANTS.SOMETHING_WENT_WRONG, HttpStatus.OK); // Return the created client with a 201 status
 
@@ -35,7 +35,7 @@ public class categoryController {
             return categoryService.getAllCategory();
 
         }catch (Exception e){
-            return (List<category>) new ResponseEntity<>(CONSTANTS.SOMETHING_WENT_WRONG, HttpStatus.OK); // Return the created client with a 201 status
+            return (List<category>) new ResponseEntity<>(CONSTANTS.SOMETHING_WENT_WRONG, HttpStatus.OK);
 
         }
     }

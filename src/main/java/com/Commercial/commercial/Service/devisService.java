@@ -1,5 +1,7 @@
 package com.Commercial.commercial.Service;
+import com.Commercial.commercial.Constants.devisStatus;
 import com.Commercial.commercial.DAO.*;
+import com.Commercial.commercial.repository.ClientRepository;
 import com.Commercial.commercial.repository.devisRepository;
 import com.Commercial.commercial.repository.productRepository;
 
@@ -8,16 +10,22 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.Commercial.commercial.Constants.devisStatus.*;
+
 @RequiredArgsConstructor
 @Service
 public class devisService{
     public final productService proSer;
     @Autowired
     devisRepository devisRepo;
+    @Autowired
+    ClientRepository clientRepo;
 
     @Autowired
     productRepository productRepo;
@@ -31,7 +39,6 @@ public class devisService{
 
         devDTO.setClient(dev.getClient());
         devDTO.setCurrency(dev.getCurrency());
-        devDTO.setProductQuantityD(dev.getProductQuantityD());
         devDTO.setCreationDate(dev.getCreationDate());
         devDTO.setOfferEndDate(dev.getOfferEndDate());
         devDTO.setSum(dev.getSum());
@@ -47,28 +54,44 @@ public class devisService{
         return devDTO;
     }
 
-    public devis createDevis(devis devi) {
+    public devisDTO createDevis(devis devi) {
         devi.setCreationDate(new Date());
+
         Calendar cal = Calendar.getInstance();
-        cal.setTime(devi.getCreationDate());  // Set the calendar to the creation date
-            cal.add(Calendar.DAY_OF_MONTH, 30);   // Add 30 days to the creation date
-        devi.setOfferEndDate(cal.getTime());  // Set the offerEndDate
+        cal.setTime(devi.getCreationDate());
+        cal.add(Calendar.DAY_OF_MONTH, 30);
+        devi.setOfferEndDate(cal.getTime());
 
-        for (product product : devi.getProducts()) {
-            product fetchedProduct = productRepo.findById(product.getId())
-                    .orElseThrow(() -> new EntityNotFoundException("Product not found"));
-
-        }
-
+        // Fetch and attach client
+        client client = clientRepo.findById(devi.getClient().getId())
+                .orElseThrow(() -> new EntityNotFoundException("Client not found"));
+        devi.setClient(client);
 
         int totalSum = 0;
-        for (product product : devi.getProducts()) {
-            totalSum += product.getPrice() * product.getOrderedQuantity(); // Assuming you have quantity in Product
+        List<product> attachedProducts = new ArrayList<>();
+
+        // Fetch and attach products
+        for (product prod : devi.getProducts()) {
+            product fetchedProduct = productRepo.findById(prod.getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+
+            // Set the ordered quantity
+          //  fetchedProduct.setOrderedQuantity(prod.getOrderedQuantity());
+           // attachedProducts.add(fetchedProduct);
+
+            totalSum += fetchedProduct.getPrice() * prod.getOrderedQuantity();
         }
+        System.out.println("Total calculated before discount: " + totalSum);
+
+     //   devi.setProducts(attachedProducts);
+
+        devi.setDevisStatus(PENDING);
         devi.setSum(totalSum);
 
-        return  devisRepo.save(devi);
+         devis d= devisRepo.save(devi);
+         return convertDevis(d);
     }
+
 
     public List<devisDTO> getAllDevis() {
         List<devis> Ldevis= devisRepo.findAll();
@@ -87,4 +110,11 @@ public class devisService{
             return ("devis with id "+id+" deleted successfully");
         }).orElseThrow(()->new EntityNotFoundException("no devis found with id :"+id +".")
         );    }
+
+
+    public void validation(devis dev){
+        dev.setDevisStatus(ACCEPTED);
+        devisRepo.save(dev);
+    }
+
 }

@@ -9,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -41,6 +39,10 @@ public class companyService {
             existingCompany.setInChargeOf(comp.getInChargeOf());
             existingCompany.setSpecifiedIn(comp.getSpecifiedIn());
             existingCompany.setFax(comp.getFax());
+            existingCompany.setTaxId(comp.getTaxId());
+            existingCompany.setBankAccount(comp.getBankAccount());
+            existingCompany.setBalance(comp.getBalance());
+
             existingCompany.setLastModifDate(new Date());
             if (comp.getCreationDate() != null) {
                 existingCompany.setCreationDate(comp.getCreationDate());
@@ -52,7 +54,7 @@ public class companyService {
         }).orElseThrow(()->new EntityNotFoundException("no company found with Id "));
     }
 
-    public List<company> getCompany() {
-      return  companyRepo.findAll();
+    public Optional<company> getCompany() {
+      return  companyRepo.findAll().stream().findFirst();
     }
 }

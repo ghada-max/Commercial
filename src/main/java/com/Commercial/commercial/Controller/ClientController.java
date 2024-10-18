@@ -20,7 +20,7 @@ public class ClientController {
 
     @PostMapping(path = "/AddClient")
     public ResponseEntity<String> addClient(@Valid @RequestBody client c) throws Exception {
-      try{  clientService.addClient(c); // Store the returned client from the service
+      try{  clientService.addClient(c);
         return new ResponseEntity<>(CONSTANTS.CLIENT_CREATED_SUCESSFULLY, HttpStatus.OK); // Return the created client with a 201 status
     }catch (Exception e){
           return new ResponseEntity<>(CONSTANTS.SOMETHING_WENT_WRONG+e, HttpStatus.OK); // Return the created client with a 201 status
