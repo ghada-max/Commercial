@@ -1,23 +1,23 @@
-package com.Commercial.commercial.Service;
+package com.Commercial.commercial.Service.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SignatureAlgorithm;
 import lombok.Builder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 import java.security.Key;
-import java.security.Signature;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
 @Builder
+@Service
 public class jwtService {
-    private static final String SECRET_KEY="hello";
+    private static final String SECRET_KEY="ktohrWT3dx9s9fAlE6K2GPTYTiQx7oC54bdiXhwGpKqifrAGVCvNtCtjVYl+M+u7pt5vh/sDtU86qWi8uFkfTL1XEBHHYgNDhs3xAxgDyHBNX72FLIIArbV03fKyNKwow6SkcQYHsrfJp1Ygz0LeEakIyX8XYkahSDYVGZASYvmIZIin2z2NSHjc8507BgGKN/Z18J5tOdwIovXf4Rxreve0PTzSNAD4dyNuZlQ+IG50oS4/wZSQeb8j0pnDj8PhP4fcBBHD/qdtbaPxFOYmb3FJH7poEpGyinSm17Cvlr3TJR7sB/kUA3tswWYJnUxxJqMkrJqNukqIWB/Yl0CTE8n1d/bFvRL0h07R6L34Vr8=\n";
     public String extractUsrName(String token) {
         return extractClaims(token,Claims::getSubject);
     }
@@ -51,7 +51,7 @@ public class jwtService {
 
     public boolean isTokenValid(String token, UserDetails userDetails){
         final String username=extractUsrName(token);
-        return (username.equals(userDetails.getUsername())&& !isTokenExprired());
+        return (username.equals(userDetails.getUsername())&& !isTokenExprired(token));
     }
 
     private boolean isTokenExprired(String token) {

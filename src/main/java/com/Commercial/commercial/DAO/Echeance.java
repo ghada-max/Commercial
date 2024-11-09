@@ -1,6 +1,7 @@
 package com.Commercial.commercial.DAO;
 import com.Commercial.commercial.Constants.EcheanceStatus;
 
+import com.Commercial.commercial.Constants.PayedBy;
 import com.Commercial.commercial.Constants.paymentStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -54,7 +55,8 @@ public class Echeance implements Serializable {
 
 
 
-
+    @Enumerated(EnumType.STRING)
+    private PayedBy payedBy;
 
 
 

@@ -86,7 +86,7 @@ public class company {
 
     @JsonProperty("Balance")
     @Column(name="Balance")
-    private BigDecimal Balance = BigDecimal.ZERO;;
+    private BigDecimal Balance = BigDecimal.ZERO;
 
 
 }

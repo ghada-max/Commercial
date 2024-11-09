@@ -38,20 +38,24 @@ public class EcheanceController {
     }
 
     @PutMapping(path="/updateEcheanceStatus/{id}")
-     public ResponseEntity<String> updateEcheanceStatus(@PathVariable Integer id,@RequestBody EcheanceStatusDTO statusDTO)throws Exception
+     public ResponseEntity<String> updateEcheanceStatus(@PathVariable Integer id)throws Exception
     {
         try{
-            EcheanceStatus echStatus = statusDTO.getEcheanceStatus();
+            //EcheanceStatus echStatus = statusDTO.getEcheanceStatus();
 
-            String response=echSer.updateStatus(id,echStatus);
+            String response=echSer.updateStatusToPaid(id);
             return new  ResponseEntity<>(response,HttpStatus.OK);
         }catch (Exception e){
             throw new Exception(e);
         }
     }
     @GetMapping(path="/sendEmailReminder")
-    public ResponseEntity<Void> SendEmailReminder(){
-        Void response=echSer.sendEmail();
-        return new ResponseEntity<>(response,HttpStatus.OK);
+    public ResponseEntity<Void> SendEmailReminder() throws  Exception{
+        try{Void response=echSer.sendEmail();
+        return new ResponseEntity<>(response,HttpStatus.OK);}
+        catch (Exception e){
+            throw new Exception(e);
+
+        }
     }
 }
