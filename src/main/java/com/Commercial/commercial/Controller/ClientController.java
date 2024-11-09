@@ -58,10 +58,10 @@ public class ClientController {
 
     }
 
-    @GetMapping(path = "/getClientById/{id}")
-    public client getClientById(@PathVariable Integer id)  {
+    @GetMapping(path = "/getClientByMail/{email}")
+    public client getClientById(@PathVariable String email)  {
 
-        return clientService.getClientById(id);
+        return clientService.getClientById(email);
 
 
     }

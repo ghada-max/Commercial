@@ -31,6 +31,8 @@ public class companyService {
 
     public company updateCompany(company comp) {
         return companyRepo.findAll().stream().findFirst().map(existingCompany->{
+            existingCompany.setSpecifiedIn(comp.getSpecifiedIn());
+
             existingCompany.setAddress(comp.getAddress());
             existingCompany.setCRN(comp.getCRN());
             existingCompany.setEmail(comp.getEmail());
@@ -41,7 +43,7 @@ public class companyService {
             existingCompany.setFax(comp.getFax());
             existingCompany.setTaxId(comp.getTaxId());
             existingCompany.setBankAccount(comp.getBankAccount());
-            existingCompany.setBalance(comp.getBalance());
+          //  existingCompany.setBalance(comp.getBalance());
 
             existingCompany.setLastModifDate(new Date());
             if (comp.getCreationDate() != null) {

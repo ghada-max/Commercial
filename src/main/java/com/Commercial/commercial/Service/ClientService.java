@@ -65,7 +65,7 @@ public class ClientService {
              .orElseThrow(() -> new EntityNotFoundException("Client not found with ID: " + id));
     }
 
-    public client getClientById(Integer id) {
-       return clientRepo.findById(id).orElseThrow(()->new EntityNotFoundException("client with id "+id+"not found"));
+    public client getClientById(String email) {
+       return clientRepo.findByEmail(email).orElseThrow(()->new EntityNotFoundException("client with email "+email+"not found"));
     }
 }
